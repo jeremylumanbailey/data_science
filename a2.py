@@ -5,10 +5,33 @@ import pandas as pd
 # Read data from file 'filename.csv'
 # (in the same directory that your python process is based)
 # Control delimiters, rows, column names with read_csv (see later)
-data = pd.read_csv("dataset_complete.csv")
+mean_imputation_table = pd.read_csv("test.csv")
 # Preview the first 5 lines of the loaded data
-data.head()
-print(data.head())
+mean_imputation_table.head()
+print(mean_imputation_table.head())
+print()
+num_of_rows = len(mean_imputation_table.index)
+
+sum_values_in_f3 = 0
+valid_values_in_f3 = 0
+i = 0
+while i < num_of_rows:
+    x = mean_imputation_table.loc[i,:].values[2]
+    if x != "?":
+        valid_values_in_f3 += 1
+        sum_values_in_f3 += float(x)
+    i += 1
+
+while i < num_of_rows:
+    x = mean_imputation_table.loc[i,:].values[2]
+    if x != "?":
+        valid_values_in_f3 += 1
+        sum_values_in_f3 += float(x)
+    i += 1
+
+print(sum_values_in_f3 / valid_values_in_f3)
+print(valid_values_in_f3)
+print("Number of rows not including header:", num_of_rows)
 
 # Use DATATABLE.to_csv("V00880079....csv") to create tables
 # data.to_csv("test.csv")
