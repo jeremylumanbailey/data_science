@@ -12,6 +12,7 @@ mean_imputation_table.head()
 print(mean_imputation_table.head())
 print()
 num_of_rows = len(mean_imputation_table.index)
+num_of_columns = len(mean_imputation_table.columns)
 
 
 def get_mean(column_to_find_mean):
@@ -25,7 +26,7 @@ def get_mean(column_to_find_mean):
             sum_values_in_f3 += float(x)
         i += 1
 
-    return(sum_values_in_f3 / valid_values_in_f3)  # print(valid_values_in_f3)
+    return sum_values_in_f3 / valid_values_in_f3  # print(valid_values_in_f3)
 
 
 def impute_mean(column_to_impute):
@@ -38,13 +39,14 @@ def impute_mean(column_to_impute):
         i += 1
 
 
-
-impute_mean(2)
+for x in range(0, num_of_columns - 1):
+    impute_mean(x)
 
 print(mean_imputation_table.head())
 print()
 
-print("Number of rows not including header:", num_of_rows)
+print("Number of columns :", num_of_columns)
+print("Number of rows :", num_of_rows)
 
 # Use DATATABLE.to_csv("V00880079....csv") to create tables
 # data.to_csv("test.csv")
