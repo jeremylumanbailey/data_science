@@ -7,7 +7,7 @@ print("START")
 # Read data from file 'filename.csv'
 # (in the same directory that your python process is based)
 # Control delimiters, rows, column names with read_csv (see later)
-mean_imputation_table = pd.read_csv("dataset_missing05.csv")
+mean_imputation_table = pd.read_csv("test.csv")
 # Preview the first 5 lines of the loaded data
 mean_imputation_table.head()
 print(mean_imputation_table.head())
@@ -17,7 +17,12 @@ num_of_columns = len(mean_imputation_table.columns)
 
 #############################################################################################
 # "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location, where "X" is row and "Y" is the column
+class_column = 0
 
+for col in mean_imputation_table:
+    if col == 'Class':
+        break
+    class_column = class_column + 1
 
 def get_mean(column_to_find_mean):
     sum_values = 0
@@ -47,9 +52,11 @@ def impute_mean(column_to_impute):
 def get_mean_conditional(column_to_find_mean, class_type):
     sum_of_values = 0
     number_to_divide_by = 0
+
     for i in range(0, num_of_rows):
+
         temp = mean_imputation_table.loc[i, :].values[column_to_find_mean]
-        temp2 = mean_imputation_table.loc[i, :].values[3]
+        temp2 = mean_imputation_table.loc[i, :].values[class_column]
         if temp != "?" and temp2 == class_type:
             number_to_divide_by += 1
             sum_of_values += float(temp)
@@ -61,7 +68,7 @@ def impute_mean_conditional(column_to_impute, class_type):
     mean_to_impute = get_mean_conditional(column_to_impute, class_type)
     for i in range(0, num_of_rows):
         temp = mean_imputation_table.loc[i, :].values[column_to_impute]
-        temp2 = mean_imputation_table.loc[i, :].values[3]
+        temp2 = mean_imputation_table.loc[i, :].values[class_column]
         if temp == "?" and temp2 == class_type:
             mean_imputation_table.loc[i, :].values[column_to_impute] = mean_to_impute
 
