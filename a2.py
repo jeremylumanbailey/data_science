@@ -1,7 +1,8 @@
-print("START")
-
 # Load the Pandas libraries with alias 'pd'
 import pandas as pd
+
+print("START")
+
 
 # Read data from file 'filename.csv'
 # (in the same directory that your python process is based)
@@ -14,34 +15,71 @@ print()
 num_of_rows = len(mean_imputation_table.index)
 num_of_columns = len(mean_imputation_table.columns)
 
+#############################################################################################
+# "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location, where "X" is row and "Y" is the column
+
 
 def get_mean(column_to_find_mean):
-    sum_values_in_f3 = 0
-    valid_values_in_f3 = 0
-    i = 0
+    sum_values = 0
+    number_to_divide_by = 0
     for i in range(0, num_of_rows):
         temp = mean_imputation_table.loc[i, :].values[column_to_find_mean]
         if temp != "?":
-            valid_values_in_f3 += 1
-            sum_values_in_f3 += float(temp)
+            number_to_divide_by += 1
+            sum_values += float(temp)
 
-    return sum_values_in_f3 / valid_values_in_f3  # print(valid_values_in_f3)
+    return sum_values / number_to_divide_by
 
 
 def impute_mean(column_to_impute):
     mean_to_impute = get_mean(column_to_impute)
-    i = 0
     for i in range(0, num_of_rows):
         temp = mean_imputation_table.loc[i, :].values[column_to_impute]
         if temp == "?":
             mean_imputation_table.loc[i, :].values[column_to_impute] = mean_to_impute
 
 
+# for x in range(0, num_of_columns - 1):
+#     impute_mean(x)
+
+#############################################################################################
+
+def get_mean_conditional(column_to_find_mean, class_type):
+    sum_of_values = 0
+    number_to_divide_by = 0
+    for i in range(0, num_of_rows):
+        temp = mean_imputation_table.loc[i, :].values[column_to_find_mean]
+        temp2 = mean_imputation_table.loc[i, :].values[3]
+        if temp != "?" and temp2 == class_type:
+            number_to_divide_by += 1
+            sum_of_values += float(temp)
+
+    return sum_of_values / number_to_divide_by
+
+
+def impute_mean_conditional(column_to_impute, class_type):
+    mean_to_impute = get_mean_conditional(column_to_impute, class_type)
+    for i in range(0, num_of_rows):
+        temp = mean_imputation_table.loc[i, :].values[column_to_impute]
+        temp2 = mean_imputation_table.loc[i, :].values[3]
+        if temp == "?" and temp2 == class_type:
+            mean_imputation_table.loc[i, :].values[column_to_impute] = mean_to_impute
+
+
+def run_both_classes_mean_imputation(x):
+    impute_mean_conditional(x, "No")
+    impute_mean_conditional(x, "Yes")
+
+
 for x in range(0, num_of_columns - 1):
-    impute_mean(x)
+    run_both_classes_mean_imputation(x)
+
+# impute_mean_conditional(2, "No")
+# print(get_mean_conditional(2, "No"))
 
 print(mean_imputation_table.head())
 print()
+
 
 print("Number of columns :", num_of_columns)
 print("Number of rows :", num_of_rows)
