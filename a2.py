@@ -6,7 +6,7 @@ import pandas as pd
 # Read data from file 'filename.csv'
 # (in the same directory that your python process is based)
 # Control delimiters, rows, column names with read_csv (see later)
-mean_imputation_table = pd.read_csv("test.csv")
+mean_imputation_table = pd.read_csv("dataset_missing05.csv")
 # Preview the first 5 lines of the loaded data
 mean_imputation_table.head()
 print(mean_imputation_table.head())
@@ -19,12 +19,11 @@ def get_mean(column_to_find_mean):
     sum_values_in_f3 = 0
     valid_values_in_f3 = 0
     i = 0
-    while i < num_of_rows:
+    for i in range(0, num_of_rows):
         temp = mean_imputation_table.loc[i, :].values[column_to_find_mean]
         if temp != "?":
             valid_values_in_f3 += 1
             sum_values_in_f3 += float(temp)
-        i += 1
 
     return sum_values_in_f3 / valid_values_in_f3  # print(valid_values_in_f3)
 
@@ -32,11 +31,10 @@ def get_mean(column_to_find_mean):
 def impute_mean(column_to_impute):
     mean_to_impute = get_mean(column_to_impute)
     i = 0
-    while i < num_of_rows:
+    for i in range(0, num_of_rows):
         temp = mean_imputation_table.loc[i, :].values[column_to_impute]
         if temp == "?":
             mean_imputation_table.loc[i, :].values[column_to_impute] = mean_to_impute
-        i += 1
 
 
 for x in range(0, num_of_columns - 1):
