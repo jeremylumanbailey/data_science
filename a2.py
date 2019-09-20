@@ -1,28 +1,40 @@
 # Load the Pandas libraries with alias 'pd'
+import math
+
 import pandas as pd
 
 print("START")
-
+print()
 
 # Read data from file 'filename.csv'
 # (in the same directory that your python process is based)
 # Control delimiters, rows, column names with read_csv (see later)
-mean_imputation_table = pd.read_csv("test.csv")
+
 # Preview the first 5 lines of the loaded data
-mean_imputation_table.head()
-print(mean_imputation_table.head())
-print()
+data_frame = pd.read_csv("test.csv")
+
+class_column = 0
+
+for col in data_frame:
+    if col == 'Class':
+        break
+    class_column = class_column + 1
+
+
+
+#                                           START MEAN IMPUTATION STUFF
+
+mean_imputation_table = pd.read_csv("test.csv")
+# print(mean_imputation_table.head())
+# print()
 num_of_rows = len(mean_imputation_table.index)
 num_of_columns = len(mean_imputation_table.columns)
 
 #############################################################################################
 # "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location, where "X" is row and "Y" is the column
-class_column = 0
+# and "mean_imputation_table" is the data frame that was imported from the .csv file
 
-for col in mean_imputation_table:
-    if col == 'Class':
-        break
-    class_column = class_column + 1
+
 
 def get_mean(column_to_find_mean):
     sum_values = 0
@@ -78,18 +90,52 @@ def run_both_classes_mean_imputation(x):
     impute_mean_conditional(x, "Yes")
 
 
-for x in range(0, num_of_columns - 1):
-    run_both_classes_mean_imputation(x)
+# for x in range(0, num_of_columns - 1):
+#     run_both_classes_mean_imputation(x)
 
 # impute_mean_conditional(2, "No")
 # print(get_mean_conditional(2, "No"))
+#
+# print(mean_imputation_table.head())
+# print()
 
-print(mean_imputation_table.head())
+#                                           END OF MEAN IMPUTATION STUFF
+
+
+#                                           START OF HOT DECK IMPUTATION
+
+# "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location,
+# where "X" is row and "Y" is the column
+# and "mean_imputation_table" is the data frame that was imported from the .csv file
+
+hot_deck_table = pd.read_csv("test.csv")
+
+num_of_rows2 = len(hot_deck_table.index)
+num_of_columns2 = len(hot_deck_table.columns)
+
+print(hot_deck_table.head())
+print()
+
+x1 = float(hot_deck_table.loc[0, :].values[0])
+x2 = float(hot_deck_table.loc[2, :].values[0])
+x3 = float(hot_deck_table.loc[0, :].values[1])
+x4 = float(hot_deck_table.loc[2, :].values[1])
+
+math.pow((x1 - x2), 2)
+
+math.pow((x3 - x4), 2)
+
+bruh = math.sqrt(math.pow((x1 - x2), 2) + math.pow((x3 - x4), 2)) / 2
+
+print(round(bruh, 4))
+
+print()
+print(hot_deck_table.head())
 print()
 
 
-print("Number of columns :", num_of_columns)
-print("Number of rows :", num_of_rows)
+print("Number of columns :", num_of_columns2)
+print("Number of rows :", num_of_rows2)
 
 # Use DATATABLE.to_csv("V00880079....csv") to create tables
 # data.to_csv("test.csv")
@@ -102,5 +148,5 @@ print("Number of rows :", num_of_rows)
 # V00880079_missing20_imputed_mean_conditional.csv
 # V00880079_missing20_imputed_hd.csv
 # V00880079_missing20_imputed_hd_conditional.csv
-
+print()
 print("END")
