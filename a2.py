@@ -116,18 +116,45 @@ num_of_columns2 = len(hot_deck_table.columns)
 print(hot_deck_table.head())
 print()
 
-x1 = float(hot_deck_table.loc[0, :].values[0])
-x2 = float(hot_deck_table.loc[2, :].values[0])
-x3 = float(hot_deck_table.loc[0, :].values[1])
-x4 = float(hot_deck_table.loc[2, :].values[1])
 
-math.pow((x1 - x2), 2)
 
-math.pow((x3 - x4), 2)
 
-bruh = math.sqrt(math.pow((x1 - x2), 2) + math.pow((x3 - x4), 2)) / 2
+if "?" in hot_deck_table.loc[0].values[0]:
+    val1 = 0
+else:
+    val1 = float(hot_deck_table.loc[0].values[0])
+if "?" in hot_deck_table.loc[2].values[0]:
+    val2 = 0
+else:
+    val2 = float(hot_deck_table.loc[2].values[0])
+if "?" in hot_deck_table.loc[0].values[1]:
+    val3 = 0
+else:
+    val3 = float(hot_deck_table.loc[0].values[1])
+if "?" in hot_deck_table.loc[2].values[1]:
+    val4 = 0
+else:
+    val4 = float(hot_deck_table.loc[2].values[1])
+
+num_to_divide_by = 2
+
+bruh = math.sqrt(math.pow((val1 - val2), 2) + math.pow((val3 - val4), 2)) / num_to_divide_by
+
+print(hot_deck_table.loc[0].values[2] == "?")
 
 print(round(bruh, 4))
+hot_deck_table.loc[0].values[2] = "????" + hot_deck_table.loc[2].values[2]
+
+print()
+print(hot_deck_table.head())
+print()
+
+hot_deck_table.loc[0].values[2] = hot_deck_table.loc[0].values[2][4:]
+
+print(hot_deck_table.loc[0].values[2] == "?")
+
+    # hot_deck_table.loc[2].values[2]
+print()
 
 print()
 print(hot_deck_table.head())
