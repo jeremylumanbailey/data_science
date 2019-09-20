@@ -116,21 +116,34 @@ num_of_columns2 = len(hot_deck_table.columns)
 print(hot_deck_table.head())
 print()
 
+# for x in range(0, num_of_rows2 - 1):
+#     run_both_classes_mean_imputation(x)
+
+# for x in range(0, num_of_columns2 - 1):
+#     run_both_classes_mean_imputation(x)
+
+current_row = 0
+col1 = 0
+col2 = 1
+col3 = 2
+col4 = 3
+
+# for x in range(0, num_of_columns - 1):
+#     run_both_classes_mean_imputation(x)
 
 
-
-if "?" in hot_deck_table.loc[0].values[0]:
+if "?" in hot_deck_table.loc[current_row].values[col1]:
     val1 = 0
 else:
-    val1 = float(hot_deck_table.loc[0].values[0])
+    val1 = float(hot_deck_table.loc[current_row].values[col1])
 if "?" in hot_deck_table.loc[2].values[0]:
     val2 = 0
 else:
     val2 = float(hot_deck_table.loc[2].values[0])
-if "?" in hot_deck_table.loc[0].values[1]:
+if "?" in hot_deck_table.loc[current_row].values[col2]:
     val3 = 0
 else:
-    val3 = float(hot_deck_table.loc[0].values[1])
+    val3 = float(hot_deck_table.loc[current_row].values[col2])
 if "?" in hot_deck_table.loc[2].values[1]:
     val4 = 0
 else:
