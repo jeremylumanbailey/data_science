@@ -230,7 +230,7 @@ def get_mae(incomplete, imputed, complete):
             if float(imputed.loc[i].values[x]) != float(complete.loc[i].values[x]):
                 temp = abs(float(imputed.loc[i].values[x]) - float(complete.loc[i].values[x]))
                 sum_of_all = sum_of_all + temp
-                print(sum_of_all)
+
     return sum_of_all / n
 
 
@@ -281,25 +281,21 @@ def main():
     dataset_missing20 = pd.read_csv("dataset_missing20.csv")
     dataset_complete = pd.read_csv("dataset_complete.csv")
 
-    # Uncomment this to do impute mean for 05 and 20
+    # Uncomment this block to do impute mean for 05 and 20
     # impute_mean(dataset_missing05).to_csv("V00880079_missing05_imputed_mean.csv", index=False)
-    impute_mean(dataset_missing20).to_csv("V00880079_missing20_imputed_mean.csv", index=False)
+    # impute_mean(dataset_missing20).to_csv("V00880079_missing20_imputed_mean.csv", index=False)
 
+    # # Uncomment this block to get MAE for missing05 via imputed mean ANSWER: 0.05557397018967987
+    # imputed_mean05 = pd.read_csv("V00880079_missing05_imputed_mean.csv")
+    # print("MAE_05_mean =", '%.4f' % get_mae(dataset_missing05, imputed_mean05, dataset_complete))
 
+    # Uncomment this block to get MAE for missing20 via imputed mean ANSWER: 0.054991356823082996
+    # imputed_mean20 = pd.read_csv("V00880079_missing20_imputed_mean.csv")
+    # print("MAE_20_mean =", '%.4f' % get_mae(dataset_missing20, imputed_mean20, dataset_complete))
 
-
-    #########################################################
-    # dataset_missing20 = pd.read_csv("dataset_missing20.csv")
-    #
-    #
-    # imputed_mean = pd.read_csv("V00880079_missing05_imputed_mean.csv")
-    #
-    # dataset_complete = pd.read_csv("dataset_complete.csv")
-    #
-    # print(get_mae(dataset_missing05, imputed_mean, dataset_complete))
-
-    ############################################################
-
+    # # Uncomment this block to do impute conditional mean for 05 and 20
+    impute_mean_conditional(dataset_missing05).to_csv("V00880079_missing05_imputed_mean_conditional.csv", index=False)
+    impute_mean_conditional(dataset_missing20).to_csv("V00880079_missing20_imputed_mean_conditional.csv", index=False)
 
     print()
     print("END")
