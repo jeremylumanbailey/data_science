@@ -62,10 +62,11 @@ def impute_mean(data_frame):
     num_of_columns = find_num_of_columns(data_frame)
 
     for x in range(0, find_num_of_columns(data_frame)):
+        mean = get_mean(x, data_frame)
         for i in range(0, num_of_rows):
             temp = data_frame.loc[i].values[x]
             if temp == "?":
-                data_frame.loc[i].values[x] = get_mean(x, data_frame)
+                data_frame.loc[i].values[x] = mean
     return data_frame
 
 
@@ -276,15 +277,20 @@ def main():
     print("START")
     print()
 
-    datattest = pd.read_csv("test.csv")
+    dataset_missing05 = pd.read_csv("dataset_missing05.csv")
+    dataset_missing20 = pd.read_csv("dataset_missing20.csv")
+    dataset_complete = pd.read_csv("dataset_complete.csv")
 
-    print(datattest.head())
-    print()
-    print(impute_mean(datattest))
+    # Uncomment this to do impute mean for 05 and 20
+    # impute_mean(dataset_missing05).to_csv("V00880079_missing05_imputed_mean.csv", index=False)
+    impute_mean(dataset_missing20).to_csv("V00880079_missing20_imputed_mean.csv", index=False)
+
+
+
 
     #########################################################
     # dataset_missing20 = pd.read_csv("dataset_missing20.csv")
-    # dataset_missing05 = pd.read_csv("dataset_missing05.csv")
+    #
     #
     # imputed_mean = pd.read_csv("V00880079_missing05_imputed_mean.csv")
     #
