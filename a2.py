@@ -22,25 +22,30 @@ import pandas as pd
 #                                           START MEAN IMPUTATION STUFF
 
 
-mean_imputation_table = pd.read_csv("dataset_missing20.csv")
-
-class_column = 0
-
-for col in mean_imputation_table:
-    if col == 'Class':
-        break
-    class_column = class_column + 1
+def find_class_column(data_frame):
+    for col in data_frame:
+        if col == 'Class':
+            break
+        class_column = class_column + 1
+    return class_column
 
 
-num_of_rows = len(mean_imputation_table.index)
-num_of_columns = len(mean_imputation_table.columns)
+def find_num_of_rows(data_frame):
+    num_of_rows = len(data_frame.index)
+    return num_of_rows
+
+
+def find_num_of_columns(data_frame):
+    num_of_columns = len(data_frame.columns)
+    return num_of_columns
 
 #############################################################################################
 # "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location, where "X" is row and "Y" is the column
 # and "mean_imputation_table" is the data frame that was imported from the .csv file
 
 
-def get_mean(column_to_find_mean):
+def get_mean(column_to_find_mean, data_frame):
+    num_of_rows = find_num_of_rows(data_frame)
     sum_values = 0
     number_to_divide_by = 0
     for i in range(0, num_of_rows):
@@ -52,8 +57,9 @@ def get_mean(column_to_find_mean):
     return sum_values / number_to_divide_by
 
 
-def impute_mean(column_to_impute):
+def impute_mean(column_to_impute, data_frame):
     mean_to_impute = get_mean(column_to_impute)
+    num_of_rows = find_num_of_rows(data_frame)
     for i in range(0, num_of_rows):
         temp = mean_imputation_table.loc[i, :].values[column_to_impute]
         if temp == "?":
@@ -86,7 +92,7 @@ def impute_mean_conditional(column_to_impute, class_type):
         temp = mean_imputation_table.loc[i, :].values[column_to_impute]
         temp2 = mean_imputation_table.loc[i, :].values[class_column]
         if temp == "?" and temp2 == class_type:
-            mean_imputation_table.loc[i, :].values[column_to_impute] = mean_to_impute
+            mean_imputation_table.loc[i].values[column_to_impute] = mean_to_impute
 
 
 def run_both_classes_mean_imputation(x):
@@ -94,14 +100,28 @@ def run_both_classes_mean_imputation(x):
     impute_mean_conditional(x, "Yes")
 
 
-def run_conditional_mean_imputation():
+def run_conditional_mean_imputation(data_frame):
+    num_of_columns = find_num_of_columns(data_frame)
     for x in range(0, num_of_columns - 1):
         run_both_classes_mean_imputation(x)
 
 
-def run_mean_imputation():
+def run_mean_imputation(data_frame):
+    num_of_columns = find_num_of_columns(data_frame)
     for x in range(0, num_of_columns - 1):
         impute_mean(x)
+
+
+def check_for_missing_data(data_frame):
+    num_of_columns = find_num_of_columns(data_frame)
+    num_of_rows = find_num_of_rows(data_frame)
+    num_of_missing_values = 0
+    for x in range(0, num_of_columns):
+        for i in range(0, num_of_rows):
+            if data_frame.loc[i].values[x] == "?":
+                num_of_missing_values = num_of_missing_values + 1
+
+    return num_of_missing_values
 
 
 
@@ -208,16 +228,19 @@ def run_mean_imputation():
 def main():
     print("START")
     print()
+    complete_data = pd.read_csv("dataset_complete.csv")
 
-    print(mean_imputation_table.head())
+    CURRENT_TABLE = pd.read_csv("test.csv")
+
+    print(CURRENT_TABLE.head())
     print()
 
-    run_mean_imputation()
+    print(check_for_missing_data(CURRENT_TABLE))
 
-    print(mean_imputation_table.head())
+    print(CURRENT_TABLE.head())
     print()
 
-    mean_imputation_table.to_csv("V00880079_missing20_imputed_mean.csv")
+    # CURRENT_TABLE.to_csv("V00880079_missing20_imputed_mean.csv")
 
     print()
     print("END")
