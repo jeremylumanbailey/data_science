@@ -49,7 +49,7 @@ def get_mean(column_to_find_mean, data_frame):
     sum_values = 0
     number_to_divide_by = 0
     for i in range(0, num_of_rows):
-        temp = mean_imputation_table.loc[i, :].values[column_to_find_mean]
+        temp = data_frame.loc[i, :].values[column_to_find_mean]
         if temp != "?":
             number_to_divide_by += 1
             sum_values += float(temp)
@@ -61,9 +61,9 @@ def impute_mean(column_to_impute, data_frame):
     mean_to_impute = get_mean(column_to_impute)
     num_of_rows = find_num_of_rows(data_frame)
     for i in range(0, num_of_rows):
-        temp = mean_imputation_table.loc[i, :].values[column_to_impute]
+        temp = data_frame.loc[i, :].values[column_to_impute]
         if temp == "?":
-            mean_imputation_table.loc[i, :].values[column_to_impute] = mean_to_impute
+            data_frame.loc[i, :].values[column_to_impute] = mean_to_impute
 
 
 # for x in range(0, num_of_columns - 1):
@@ -214,41 +214,52 @@ def check_for_missing_data(data_frame):
 
 
 def get_mae(incomplete, imputed, complete):
-    print("get mae")
-    N = check_for_missing_data(incomplete)
-    if N == 0:
+    n = check_for_missing_data(incomplete)
+    if n == 0:
         print("No missing value in data set")
         return 0
 
-    print("BREAK 1 ")
     num_of_columns = find_num_of_columns(complete)
     num_of_rows = find_num_of_rows(complete)
     sum_of_all = 0
 
-    print("BREAK 2")
     for x in range(0, num_of_columns):
-        print("BREAK 3")
         for i in range(0, num_of_rows):
-            print("BREAK 4")
             temp = abs(float(imputed.loc[i].values[x]) - float(complete.loc[i].values[x]))
-            print("BREAK 5")
             sum_of_all = sum_of_all + temp
 
-    return sum_of_all / N
+    return sum_of_all / n
+
+
+def get_mae_05_mean():
+    MAE_incomplete = pd.read_csv("MAE_test_INcomplete.csv")
+    MAE_COMPLETE = pd.read_csv("MAE_test_complete.csv")
+    MAE_imputed = pd.read_csv("MAE_test_imputed.csv")
+
+
+def print_mae_values():
+    print("print_mae_value")
+
+# MAE_05_mean = 0.1234
+# MAE_05_mean_conditional = 0.5678
+# MAE_05_hd = 0.1234
+# MAE_05_hd_conditional = 0.5678
+# MAE_20_mean = 0.1234
+# MAE_20_mean_conditional = 0.5678
+# MAE_20_hd = 0.1234
+# MAE_20_hd_conditional = 0.5678
+
+
+
 #                                               END OF MAE STUFF
 
-def main():
-    print("START")
-    print()
-    # complete_data = pd.read_csv("dataset_complete.csv")
+
+def mae_test():
 
     MAE_incomplete = pd.read_csv("MAE_test_INcomplete.csv")
     MAE_COMPLETE = pd.read_csv("MAE_test_complete.csv")
     MAE_imputed = pd.read_csv("MAE_test_imputed.csv")
     print(check_for_missing_data(MAE_incomplete))
-
-    # print(get_MAE(MAE_incomplete, MAE_imputed, MAE_COMPLETE))
-
 
     print(MAE_incomplete.head())
     print()
@@ -259,12 +270,17 @@ def main():
 
     x = get_mae(MAE_incomplete, MAE_imputed, MAE_COMPLETE)
     print(x)
-    # print(check_for_missing_data(CURRENT_TABLE))
 
-    # print(CURRENT_TABLE.head())
-    # print()
 
-    # CURRENT_TABLE.to_csv("V00880079_missing20_imputed_mean.csv")
+def main():
+    print("START")
+    print()
+
+    dataset_missing05 = pd.read_csv("dataset_missing05.csv")
+    dataset_missing20 = pd.read_csv("dataset_missing20.csv")
+    dataset_complete = pd.read_csv("dataset_complete.csv")
+
+
 
     print()
     print("END")
@@ -284,3 +300,11 @@ main()
 # V00880079_missing20_imputed_hd.csv
 # V00880079_missing20_imputed_hd_conditional.csv
 
+# MAE_05_mean = 0.1234
+# MAE_05_mean_conditional = 0.5678
+# MAE_05_hd = 0.1234
+# MAE_05_hd_conditional = 0.5678
+# MAE_20_mean = 0.1234
+# MAE_20_mean_conditional = 0.5678
+# MAE_20_hd = 0.1234
+# MAE_20_hd_conditional = 0.5678
