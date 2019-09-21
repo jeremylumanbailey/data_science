@@ -49,7 +49,7 @@ def get_mean(column_to_find_mean, data_frame):
     sum_values = 0
     number_to_divide_by = 0
     for i in range(0, num_of_rows):
-        temp = data_frame.loc[i, :].values[column_to_find_mean]
+        temp = data_frame.loc[i].values[column_to_find_mean]
         if temp != "?":
             number_to_divide_by += 1
             sum_values += float(temp)
@@ -57,17 +57,21 @@ def get_mean(column_to_find_mean, data_frame):
     return sum_values / number_to_divide_by
 
 
-def impute_mean(column_to_impute, data_frame):
-    mean_to_impute = get_mean(column_to_impute)
+def impute_mean(data_frame):
     num_of_rows = find_num_of_rows(data_frame)
-    for i in range(0, num_of_rows):
-        temp = data_frame.loc[i, :].values[column_to_impute]
-        if temp == "?":
-            data_frame.loc[i, :].values[column_to_impute] = mean_to_impute
+    num_of_columns = find_num_of_columns(data_frame)
+
+    for x in range(0, find_num_of_columns(data_frame)):
+        for i in range(0, num_of_rows):
+            temp = data_frame.loc[i].values[x]
+            if temp == "?":
+                data_frame.loc[i].values[x] = get_mean(x, data_frame)
+    return data_frame
 
 
-# for x in range(0, num_of_columns - 1):
-#     impute_mean(x)
+
+
+
 
 #############################################################################################
 
@@ -122,10 +126,6 @@ def check_for_missing_data(data_frame):
                 num_of_missing_values = num_of_missing_values + 1
 
     return num_of_missing_values
-
-
-
-
 
 #                                           END OF MEAN IMPUTATION STUFF
 
@@ -215,6 +215,7 @@ def check_for_missing_data(data_frame):
 
 def get_mae(incomplete, imputed, complete):
     n = check_for_missing_data(incomplete)
+    print("n = ", n)
     if n == 0:
         print("No missing value in data set")
         return 0
@@ -223,18 +224,17 @@ def get_mae(incomplete, imputed, complete):
     num_of_rows = find_num_of_rows(complete)
     sum_of_all = 0
 
-    for x in range(0, num_of_columns):
+    for x in range(1, num_of_columns):
         for i in range(0, num_of_rows):
-            temp = abs(float(imputed.loc[i].values[x]) - float(complete.loc[i].values[x]))
-            sum_of_all = sum_of_all + temp
-
+            if float(imputed.loc[i].values[x]) != float(complete.loc[i].values[x]):
+                temp = abs(float(imputed.loc[i].values[x]) - float(complete.loc[i].values[x]))
+                sum_of_all = sum_of_all + temp
+                print(sum_of_all)
     return sum_of_all / n
 
 
-def get_mae_05_mean():
-    MAE_incomplete = pd.read_csv("MAE_test_INcomplete.csv")
-    MAE_COMPLETE = pd.read_csv("MAE_test_complete.csv")
-    MAE_imputed = pd.read_csv("MAE_test_imputed.csv")
+# def get_mae_05_mean(incomplete, imputed, complete):
+#     print("MAE_05_mean =",get_mae(incomplete, imputed, complete))
 
 
 def print_mae_values():
@@ -276,10 +276,23 @@ def main():
     print("START")
     print()
 
-    dataset_missing05 = pd.read_csv("dataset_missing05.csv")
-    dataset_missing20 = pd.read_csv("dataset_missing20.csv")
-    dataset_complete = pd.read_csv("dataset_complete.csv")
+    datattest = pd.read_csv("test.csv")
 
+    print(datattest.head())
+    print()
+    print(impute_mean(datattest))
+
+    #########################################################
+    # dataset_missing20 = pd.read_csv("dataset_missing20.csv")
+    # dataset_missing05 = pd.read_csv("dataset_missing05.csv")
+    #
+    # imputed_mean = pd.read_csv("V00880079_missing05_imputed_mean.csv")
+    #
+    # dataset_complete = pd.read_csv("dataset_complete.csv")
+    #
+    # print(get_mae(dataset_missing05, imputed_mean, dataset_complete))
+
+    ############################################################
 
 
     print()
