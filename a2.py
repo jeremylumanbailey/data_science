@@ -210,7 +210,39 @@ def check_for_missing_data(data_frame):
 # print("Number of columns :", num_of_columns2)
 # print("Number of rows :", num_of_rows2)
 
+#                                               MAE STUFF
 
+
+#                                               END OF MAE STUFF
+
+def main():
+    print("START")
+    print()
+    # complete_data = pd.read_csv("dataset_complete.csv")
+
+    MAE_incomplete = pd.read_csv("MAE_test_INcomplete.csv")
+    MAE_COMPLETE = pd.read_csv("MAE_test_complete.csv")
+    MAE_imputed = pd.read_csv("MAE_test_imputed.csv")
+
+    print(MAE_incomplete.head())
+    print()
+    print(MAE_imputed.head())
+    print()
+    print(MAE_COMPLETE.head())
+    print()
+
+    # print(check_for_missing_data(CURRENT_TABLE))
+
+    # print(CURRENT_TABLE.head())
+    # print()
+
+    # CURRENT_TABLE.to_csv("V00880079_missing20_imputed_mean.csv")
+
+    print()
+    print("END")
+
+
+main()
 
 # Use DATATABLE.to_csv("V00880079....csv") to create tables
 # data.to_csv("test.csv")
@@ -223,30 +255,4 @@ def check_for_missing_data(data_frame):
 # V00880079_missing20_imputed_mean_conditional.csv
 # V00880079_missing20_imputed_hd.csv
 # V00880079_missing20_imputed_hd_conditional.csv
-
-
-def main():
-    print("START")
-    print()
-    complete_data = pd.read_csv("dataset_complete.csv")
-
-    CURRENT_TABLE = pd.read_csv("test.csv")
-
-    print(CURRENT_TABLE.head())
-    print()
-
-    print(check_for_missing_data(CURRENT_TABLE))
-
-    print(CURRENT_TABLE.head())
-    print()
-
-    # CURRENT_TABLE.to_csv("V00880079_missing20_imputed_mean.csv")
-
-    print()
-    print("END")
-
-
-main()
-
-
 
