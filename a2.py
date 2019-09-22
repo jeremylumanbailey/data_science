@@ -181,78 +181,37 @@ def mae_test():
 # and "mean_imputation_table" is the data frame that was imported from the .csv file
 
 
-def hot_deck_imputation(hot_deck_table):
 
-    num_of_rows = find_num_of_rows(hot_deck_table)
-    num_of_columns = find_num_of_columns(hot_deck_table)
+def hot_deck_imputation(data_frame):
+    print(data_frame)
 
-    def impute_hot_deck(row, column):
-            for i in num_of_columns:
-                if i == column:
-                    continue
+    def get_distances(row, column):
+        
+        print()
 
+    def find_row(row, column):
+        distances = get_distances(row, column)
+        return distances.get(min(distances))
 
-    def get_distance(obj1, objn, column):
-        if "?" in hot_deck_table.loc[obj1].values[column] or "?" in hot_deck_table.loc[objn].values[column]:
-            return 0
-        else:
-            return math.pow((float(hot_deck_table.loc[obj1].values[column]) - float(hot_deck_table.loc[objn].values[column])), 2)
+    def find_most_similar_object(row, column):
+        in_row = find_row(row, column)
+        most_similar = data_frame.loc[in_row].values[column]
+        return most_similar
 
-    def get_distance_for_current_row(row):
-        for x in num_of_columns:
-            print()
+    def impute_hd(row, column):
+        data_frame.loc[row].values[column] = find_most_similar_object(row, column)
 
-    def find_missing_data():
+    def find_missing_values():
+        num_of_columns = find_num_of_columns(data_frame)
+        num_of_rows = find_num_of_rows(data_frame)
         for x in range(0, num_of_columns):
             for i in range(0, num_of_rows):
-                if hot_deck_table.loc[i].values[x] == "?":
-                    impute_hot_deck(i, x)
+                if data_frame.loc[i].values[x] == "?":
+                    impute_hd(i, x)
 
-    current_row = 0
-    col1 = 0
-    col2 = 1
-    col3 = 2
-    col4 = 3
+    find_missing_values()
 
-
-    if "?" in hot_deck_table.loc[current_row].values[col1] :
-        val1 = 0
-    else:
-        val1 = float(hot_deck_table.loc[current_row].values[col1])
-
-    if "?" in hot_deck_table.loc[2].values[0]:
-        val2 = 0
-    else:
-        val2 = float(hot_deck_table.loc[2].values[0])
-
-    if "?" in hot_deck_table.loc[current_row].values[col2]:
-        val3 = 0
-    else:
-        val3 = float(hot_deck_table.loc[current_row].values[col2])
-
-    if "?" in hot_deck_table.loc[2].values[1]:
-        val4 = 0
-    else:
-        val4 = float(hot_deck_table.loc[2].values[1])
-
-    num_to_divide_by = 2
-
-    distance = math.sqrt(math.pow((val1 - val2), 2) + math.pow((val3 - val4), 2)) / num_to_divide_by
-
-    print(hot_deck_table.loc[0].values[2] == "?")
-
-    print(round(distance, 4))
-    hot_deck_table.loc[0].values[2] = "????" + hot_deck_table.loc[2].values[2]
-
-    hot_deck_table.loc[0].values[2] = hot_deck_table.loc[0].values[2][4:]
-
-    print(hot_deck_table.loc[0].values[2] == "?")
-
-        # hot_deck_table.loc[2].values[2]
-    print(hot_deck_table.head())
-    print()
-
-
+    return data_frame
 
 
 def main():
@@ -298,16 +257,25 @@ def main():
     # print("MAE_20_mean_conditional =", '%.4f' % get_mae(dataset_missing20, imputed_mean_conditional20, dataset_complete))
 ########################################################################################################################
 
-
-
     testdata = pd.read_csv("test.csv")
 
-    print(testdata.head())
+    print(hot_deck_imputation(testdata))
     print()
 
-    hot_deck_imputation(testdata)
 
 
+    print()
+    # distances_row = {}
+    # distances= distances_row
+    # # distances_row[DISTANCE] = X_VALUE
+    #
+    # distances_row[0.1157] = 2
+    # distances_row[0.4334] = 1
+    # print(distances_row)
+    # print()
+    # print(max(distances_row))
+    # print(distances_row.get(min(distances_row)))
+    # print(distances)
     print()
     print("END")
 
@@ -335,12 +303,136 @@ main()
 # MAE_20_hd = 0.1234
 # MAE_20_hd_conditional = 0.5678
 
+#
+# def get_euclidean_for_current_column(base_row, compare_row):
+#     for i in compare_row:
+#         if i == compare_row:
+#             continue
+#
+#
+# # def get_euclidean_for_current_column(row, column):
+# #         for i in num_of_columns:
+# #
+# #             if i == column:
+# #                 continue
+# #             if get_distance(row, num_of_rows, column) != 0:
+# #                 numerator = numerator + get_distance(row, num_of_rows, column)
+# #                 denominator = denominator + 1
+# #         return math.sqrt(numerator)
+#
+# # hot_deck_table.loc[row].values[column] = "????" # + hot_deck_table.loc[row].values[column]
+#
+# def get_distance(obj1, objn, column):
+#     if "?" in hot_deck_table.loc[obj1].values[column] or "?" in hot_deck_table.loc[objn].values[column]:
+#         return 0
+#     else:
+#         return math.pow(
+#             (float(hot_deck_table.loc[obj1].values[column]) - float(hot_deck_table.loc[objn].values[column])), 2)
+#
+#
+# def impute_hot_deck(row, column):
+#     dictionary = {}
+#     for x in num_of_rows:
+#         print()
+#
+#
+# def find_missing_data():
+#     for x in range(0, num_of_columns):
+#         for i in range(0, num_of_rows):
+#             if hot_deck_table.loc[i].values[x] == "?":
+#                 impute_hot_deck(i, x)
 
 
+# if "?" in hot_deck_table.loc[2].values[0]:
+#     val2 = 0
+# else:
+#     val2 = float(hot_deck_table.loc[2].values[0])
+#
+# if "?" in hot_deck_table.loc[current_row].values[col2]:
+#     val3 = 0
+# else:
+#     val3 = float(hot_deck_table.loc[current_row].values[col2])
+#
+# if "?" in hot_deck_table.loc[2].values[1]:
+#     val4 = 0
+# else:
+#     val4 = float(hot_deck_table.loc[2].values[1])
 
 
+# distance = math.sqrt(math.pow((val1 - val2), 2) + math.pow((val3 - val4), 2)) / num_to_divide_by
+
+# print(hot_deck_table.loc[0].values[2] == "?")
+#
+# print(round(distance, 4))
+# hot_deck_table.loc[0].values[2] = "????" + hot_deck_table.loc[2].values[2]
+#
+# hot_deck_table.loc[0].values[2] = hot_deck_table.loc[0].values[2][4:]
+#
+# print(hot_deck_table.loc[0].values[2] == "?")
+#
+#     # hot_deck_table.loc[2].values[2]
+# print(hot_deck_table.head())
+# print()
 
 
-
-
-
+# def hot_deck_imputation(hot_deck_table):
+#
+#     num_of_rows = find_num_of_rows(hot_deck_table)
+#     num_of_columns = find_num_of_columns(hot_deck_table)
+#
+#     def return_ED_from_current_row(column_to_avoid, current_row):
+#
+#         # # CAREFUL THIS MIGHT INCLUDE HEADER ROW
+#         # current_row = 0
+#         col1 = 0
+#         col2 = 1
+#         col3 = 2
+#         # col4 = 3
+#         # col5 = 4
+#         # col6 = 5
+#         # col6 = 6
+#         # col8 = 7
+#         num_to_divide_by = 0
+#
+#         for i in range(0, num_of_rows):
+#             if "?" in hot_deck_table.loc[current_row].values[col1] or hot_deck_table.loc[i].values[col1] or col1 == column_to_avoid:
+#                 val1 = 0
+#             else:
+#                 val1 = math.sqrt(
+#                     math.pow(float(hot_deck_table.loc[current_row].values[col1]) - float(hot_deck_table.loc[i].values[col1]))
+#                 )
+#                 num_to_divide_by = num_to_divide_by + 1
+#
+#             if "?" in hot_deck_table.loc[current_row].values[col2] or hot_deck_table.loc[i].values[col1] or col2 == column_to_avoid:
+#                 val2 = 0
+#             else:
+#                 val2 = math.sqrt(
+#                     math.pow(float(hot_deck_table.loc[current_row].values[col2]) - float(hot_deck_table.loc[i].values[col2]))
+#                 )
+#                 num_to_divide_by = num_to_divide_by + 1
+#
+#             if "?" in hot_deck_table.loc[current_row].values[col3] or hot_deck_table.loc[i].values[col1] or col3 == column_to_avoid:
+#                 val3 = 0
+#             else:
+#                 val3 = math.sqrt(
+#                     math.pow(float(hot_deck_table.loc[current_row].values[col3]) - float(hot_deck_table.loc[i].values[col3]))
+#                 )
+#                 num_to_divide_by = num_to_divide_by + 1
+#
+#         return math.sqrt(val1 + val2 + val3) / num_to_divide_by
+#
+#
+#     def stupiddumb():
+#         column_to_avoid = 2
+#         distances_column = {}
+#         distances_row = {}
+#         for x in range(0, num_of_rows):
+#             if return_ED_from_current_row(column_to_avoid, x) == 0:
+#                 print("distance was zero uh oh")
+#             distance = return_ED_from_current_row(column_to_avoid, x)
+#             distances_row[distance] = x
+#         print(distances_row)
+#
+#     stupiddumb()
+#
+#     return hot_deck_table
