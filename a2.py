@@ -174,6 +174,87 @@ def mae_test():
     print(x)
 
 
+                                          # START OF HOT DECK IMPUTATION
+
+# "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location,
+# where "X" is row and "Y" is the column
+# and "mean_imputation_table" is the data frame that was imported from the .csv file
+
+
+def hot_deck_imputation(hot_deck_table):
+
+    num_of_rows = find_num_of_rows(hot_deck_table)
+    num_of_columns = find_num_of_columns(hot_deck_table)
+
+    def impute_hot_deck(row, column):
+            for i in num_of_columns:
+                if i == column:
+                    continue
+
+
+    def get_distance(obj1, objn, column):
+        if "?" in hot_deck_table.loc[obj1].values[column] or "?" in hot_deck_table.loc[objn].values[column]:
+            return 0
+        else:
+            return math.pow((float(hot_deck_table.loc[obj1].values[column]) - float(hot_deck_table.loc[objn].values[column])), 2)
+
+    def get_distance_for_current_row(row):
+        for x in num_of_columns:
+            print()
+
+    def find_missing_data():
+        for x in range(0, num_of_columns):
+            for i in range(0, num_of_rows):
+                if hot_deck_table.loc[i].values[x] == "?":
+                    impute_hot_deck(i, x)
+
+    current_row = 0
+    col1 = 0
+    col2 = 1
+    col3 = 2
+    col4 = 3
+
+
+    if "?" in hot_deck_table.loc[current_row].values[col1] :
+        val1 = 0
+    else:
+        val1 = float(hot_deck_table.loc[current_row].values[col1])
+
+    if "?" in hot_deck_table.loc[2].values[0]:
+        val2 = 0
+    else:
+        val2 = float(hot_deck_table.loc[2].values[0])
+
+    if "?" in hot_deck_table.loc[current_row].values[col2]:
+        val3 = 0
+    else:
+        val3 = float(hot_deck_table.loc[current_row].values[col2])
+
+    if "?" in hot_deck_table.loc[2].values[1]:
+        val4 = 0
+    else:
+        val4 = float(hot_deck_table.loc[2].values[1])
+
+    num_to_divide_by = 2
+
+    distance = math.sqrt(math.pow((val1 - val2), 2) + math.pow((val3 - val4), 2)) / num_to_divide_by
+
+    print(hot_deck_table.loc[0].values[2] == "?")
+
+    print(round(distance, 4))
+    hot_deck_table.loc[0].values[2] = "????" + hot_deck_table.loc[2].values[2]
+
+    hot_deck_table.loc[0].values[2] = hot_deck_table.loc[0].values[2][4:]
+
+    print(hot_deck_table.loc[0].values[2] == "?")
+
+        # hot_deck_table.loc[2].values[2]
+    print(hot_deck_table.head())
+    print()
+
+
+
+
 def main():
     print("START")
     print()
@@ -217,6 +298,16 @@ def main():
     # print("MAE_20_mean_conditional =", '%.4f' % get_mae(dataset_missing20, imputed_mean_conditional20, dataset_complete))
 ########################################################################################################################
 
+
+
+    testdata = pd.read_csv("test.csv")
+
+    print(testdata.head())
+    print()
+
+    hot_deck_imputation(testdata)
+
+
     print()
     print("END")
 
@@ -252,82 +343,4 @@ main()
 
 
 
-#                                           START OF HOT DECK IMPUTATION
 
-# "mean_imputation_table.loc[X, :].values[Y]" gets a cell at a certain location,
-# where "X" is row and "Y" is the column
-# and "mean_imputation_table" is the data frame that was imported from the .csv file
-#
-# hot_deck_table = pd.read_csv("test.csv")
-#
-# num_of_rows2 = len(hot_deck_table.index)
-# num_of_columns2 = len(hot_deck_table.columns)
-#
-# print(hot_deck_table.head())
-# print()
-#
-# # for x in range(0, num_of_rows2 - 1):
-# #     run_both_classes_mean_imputation(x)
-#
-# # for x in range(0, num_of_columns2 - 1):
-# #     run_both_classes_mean_imputation(x)
-#
-# current_row = 0
-# col1 = 0
-# col2 = 1
-# col3 = 2
-# col4 = 3
-#
-# # for x in range(0, num_of_columns - 1):
-# #     run_both_classes_mean_imputation(x)
-#
-#
-# if "?" in hot_deck_table.loc[current_row].values[col1] :
-#     val1 = 0
-# else:
-#     val1 = float(hot_deck_table.loc[current_row].values[col1])
-#
-# if "?" in hot_deck_table.loc[2].values[0]:
-#     val2 = 0
-# else:
-#     val2 = float(hot_deck_table.loc[2].values[0])
-#
-# if "?" in hot_deck_table.loc[current_row].values[col2]:
-#     val3 = 0
-# else:
-#     val3 = float(hot_deck_table.loc[current_row].values[col2])
-#
-# if "?" in hot_deck_table.loc[2].values[1]:
-#     val4 = 0
-# else:
-#     val4 = float(hot_deck_table.loc[2].values[1])
-#
-# num_to_divide_by = 2
-#
-#
-#
-# bruh = math.sqrt(math.pow((val1 - val2), 2) + math.pow((val3 - val4), 2)) / num_to_divide_by
-#
-# print(hot_deck_table.loc[0].values[2] == "?")
-#
-# print(round(bruh, 4))
-# hot_deck_table.loc[0].values[2] = "????" + hot_deck_table.loc[2].values[2]
-#
-# print()
-# print(hot_deck_table.head())
-# print()
-#
-# hot_deck_table.loc[0].values[2] = hot_deck_table.loc[0].values[2][4:]
-#
-# print(hot_deck_table.loc[0].values[2] == "?")
-#
-#     # hot_deck_table.loc[2].values[2]
-# print()
-#
-# print()
-# print(hot_deck_table.head())
-# print()
-
-#
-# print("Number of columns :", num_of_columns2)
-# print("Number of rows :", num_of_rows2)
