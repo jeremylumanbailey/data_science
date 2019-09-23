@@ -156,23 +156,6 @@ def print_mae_values():
 #                                               END OF MAE STUFF
 
 
-def mae_test():
-
-    MAE_incomplete = pd.read_csv("MAE_test_INcomplete.csv")
-    MAE_COMPLETE = pd.read_csv("MAE_test_complete.csv")
-    MAE_imputed = pd.read_csv("MAE_test_imputed.csv")
-    print(check_for_missing_data(MAE_incomplete))
-
-    print(MAE_incomplete.head())
-    print()
-    print(MAE_imputed.head())
-    print()
-    print(MAE_COMPLETE.head())
-    print()
-
-    x = get_mae(MAE_incomplete, MAE_imputed, MAE_COMPLETE)
-    print(x)
-
 
                                           # START OF HOT DECK IMPUTATION
 
@@ -184,10 +167,25 @@ def mae_test():
 
 def hot_deck_imputation(data_frame):
     print(data_frame)
+    num_of_columns = find_num_of_columns(data_frame)
+    num_of_rows = find_num_of_rows(data_frame)
+
+    def minusfunciton(obj, obj_n, columnthing):
+        return math.pow(
+            float(data_frame.loc[obj].values[columnthing])
+            - float(data_frame.loc[obj_n].values[columnthing]), 2)
+
+    def sqringfunction(column):
+        for x in range(0, num_of_columns):
+            if x == column:
+                continue
+            for i in range(0, num_of_rows):
+                minusfunciton()
 
     def get_distances(row, column):
-        
-        print()
+        distances = {}
+
+        return distances
 
     def find_row(row, column):
         distances = get_distances(row, column)
@@ -202,8 +200,6 @@ def hot_deck_imputation(data_frame):
         data_frame.loc[row].values[column] = find_most_similar_object(row, column)
 
     def find_missing_values():
-        num_of_columns = find_num_of_columns(data_frame)
-        num_of_rows = find_num_of_rows(data_frame)
         for x in range(0, num_of_columns):
             for i in range(0, num_of_rows):
                 if data_frame.loc[i].values[x] == "?":
@@ -262,9 +258,8 @@ def main():
     print(hot_deck_imputation(testdata))
     print()
 
-
-
     print()
+
     # distances_row = {}
     # distances= distances_row
     # # distances_row[DISTANCE] = X_VALUE
@@ -278,9 +273,29 @@ def main():
     # print(distances)
     print()
     print("END")
-
-
 main()
+
+
+
+
+
+# def mae_test():
+#
+#     MAE_incomplete = pd.read_csv("MAE_test_INcomplete.csv")
+#     MAE_COMPLETE = pd.read_csv("MAE_test_complete.csv")
+#     MAE_imputed = pd.read_csv("MAE_test_imputed.csv")
+#     print(check_for_missing_data(MAE_incomplete))
+#
+#     print(MAE_incomplete.head())
+#     print()
+#     print(MAE_imputed.head())
+#     print()
+#     print(MAE_COMPLETE.head())
+#     print()
+#
+#     x = get_mae(MAE_incomplete, MAE_imputed, MAE_COMPLETE)
+#     print(x)
+
 
 # Use DATATABLE.to_csv("V00880079....csv") to create tables
 # data.to_csv("test.csv")
