@@ -166,21 +166,13 @@ def print_mae_values():
 
 
 def hot_deck_imputation(data_frame):
-    print(data_frame)
+    # print(data_frame)
     num_of_columns = find_num_of_columns(data_frame)
     num_of_rows = find_num_of_rows(data_frame)
 
-    def minusfunciton(obj, obj_n, columnthing):
-        return math.pow(
-            float(data_frame.loc[obj].values[columnthing])
-            - float(data_frame.loc[obj_n].values[columnthing]), 2)
 
     def sqringfunction(column):
-        for x in range(0, num_of_columns):
-            if x == column:
-                continue
-            for i in range(0, num_of_rows):
-                minusfunciton()
+        print()
 
     def get_distances(row, column):
         distances = {}
@@ -205,9 +197,31 @@ def hot_deck_imputation(data_frame):
                 if data_frame.loc[i].values[x] == "?":
                     impute_hd(i, x)
 
-    find_missing_values()
+    def minusfunciton(obj, obj_n, col):
+        if "?" in data_frame.loc[obj].values[col] or "?" in data_frame.loc[obj_n].values[col]:
+            return 0
+        else:
+            return math.pow(
+                float(data_frame.loc[obj].values[col])
+                - float(data_frame.loc[obj_n].values[col]), 2)
 
-    return data_frame
+    def function21(base_row, compared_row):
+        dis_sum = 0
+        m = 0
+        for x in range(base_row, num_of_columns):
+            if minusfunciton(base_row, compared_row, x) != 0:
+                m = m + 1
+                dis_sum = minusfunciton(0, compared_row, x) + dis_sum
+        # print(minusfunciton(0, 1, x))
+        # print(dis_sum)
+        # print(m)
+        if m != 0:
+            print(math.sqrt(dis_sum) / m)
+        #print("should be:",math.sqrt(math.pow(0.40256 - 0.41139, 2) + math.pow(0.1497 - 0.3014, 2)) / 2)
+
+    for x in range(0, num_of_rows):
+        function21(0, x)
+    # return data_frame
 
 
 def main():
@@ -255,8 +269,8 @@ def main():
 
     testdata = pd.read_csv("test.csv")
 
-    print(hot_deck_imputation(testdata))
     print()
+    hot_deck_imputation(testdata)
 
     print()
 
